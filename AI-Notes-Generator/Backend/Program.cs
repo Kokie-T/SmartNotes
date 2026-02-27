@@ -7,17 +7,18 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<GeminiService>();
 
 // Add DbContext with LocalDB
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-var jwtSecret = "ThisIsAReallyLongSecretKeyForDev12345!"; // TODO: move to appsettings.json in real projects
-
+// JWT setup
+var jwtSecret = builder.Configuration["JWT_SECRET"];
 builder.Services.AddSingleton(new TokenService(jwtSecret));
 
 builder.Services.AddAuthentication(options =>
@@ -46,10 +47,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseAuthentication();
-app.UseAuthorization();
-
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

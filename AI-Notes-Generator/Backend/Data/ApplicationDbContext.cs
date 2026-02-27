@@ -10,6 +10,9 @@ namespace Backend.Data
             : base(options) { }
 
         public DbSet<User> Users { get; set; }
+
+        public DbSet<Note> Notes => Set<Note>();
+        public DbSet<Quiz> Quizzes => Set<Quiz>();
     }
 }
 
