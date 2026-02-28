@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Footer from "./components/Footer";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
@@ -21,6 +22,7 @@ export default function App() {
                 <Route path="/flashcards" element={<Flashcards />} />
                 <Route path="/generatequiz" element={<GenerateQuiz />} />
             </Routes>
+            <Footer/>
         </BrowserRouter>
     );
 }

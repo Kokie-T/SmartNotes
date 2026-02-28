@@ -8,7 +8,7 @@ export default function LandingPage() {
         <div
             style={{
                 minHeight: "100vh",
-                width: "100%", // full viewport width
+                width: "100%",
                 margin: 0,
                 padding: 0,
                 background: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)",
@@ -33,7 +33,6 @@ export default function LandingPage() {
                     top: 0,
                     zIndex: 1000,
                     flexWrap: "wrap",
-				
                 }}
             >
                 {/* Left: Logo + main nav */}
@@ -49,7 +48,9 @@ export default function LandingPage() {
                         <div style={{ position: "relative" }}>
                             <button
                                 onClick={() => setMoreOpen(!moreOpen)}
-                                style={navLinkStyle}
+                                style={moreButtonStyle}
+                                onMouseEnter={e => e.currentTarget.style.background = "#6366f1"}
+                                onMouseLeave={e => e.currentTarget.style.background = "#4f46e5"}
                             >
                                 More ▾
                             </button>
@@ -59,7 +60,7 @@ export default function LandingPage() {
                                         position: "absolute",
                                         top: "120%",
                                         left: 0,
-                                        background: "rgba(260,255,255,0.08)",
+                                        background: "rgba(255,255,255,0.08)",
                                         backdropFilter: "blur(10px)",
                                         borderRadius: "8px",
                                         padding: "10px",
@@ -96,7 +97,12 @@ export default function LandingPage() {
                     padding: "80px 20px"
                 }}
             >
-                <h1 style={{ fontSize: "3rem", fontWeight: 700, marginBottom: "20px" }}>
+                <h1 style={{
+                    fontSize: "3rem",
+                    fontWeight: 700,
+                    marginBottom: "20px",
+                    textShadow: "0 2px 10px rgba(0,0,0,0.5)"
+                }}>
                     Generate Notes, Quizzes & Flashcards with AI
                 </h1>
                 <p style={{ fontSize: "1.2rem", opacity: 0.8, marginBottom: "30px", maxWidth: "700px" }}>
@@ -128,7 +134,7 @@ export default function LandingPage() {
     );
 }
 
-// Feature card
+// Feature card with hover lift
 function FeatureCard({ title, description }) {
     return (
         <div
@@ -140,8 +146,11 @@ function FeatureCard({ title, description }) {
                 border: "1px solid rgba(255,255,255,0.08)",
                 boxShadow: "0 20px 40px rgba(0,0,0,0.3)",
                 color: "white",
-                textAlign: "center"
+                textAlign: "center",
+                transition: "0.3s ease, transform 0.3s ease",
             }}
+            onMouseEnter={e => e.currentTarget.style.transform = "translateY(-5px)"}
+            onMouseLeave={e => e.currentTarget.style.transform = "translateY(0)"}
         >
             <h3 style={{ fontWeight: 600, marginBottom: "12px" }}>{title}</h3>
             <p style={{ fontSize: "0.9rem", opacity: 0.8 }}>{description}</p>
@@ -180,4 +189,15 @@ const getStartedButton = {
     transition: "0.3s ease",
     cursor: "pointer",
     boxShadow: "0 10px 20px rgba(0,0,0,0.3)"
+};
+
+const moreButtonStyle = {
+    padding: "6px 12px",
+    borderRadius: "8px",
+    background: "#4f46e5",
+    color: "white",
+    fontWeight: 500,
+    cursor: "pointer",
+    border: "none",
+    transition: "0.3s ease, transform 0.2s ease",
 };
