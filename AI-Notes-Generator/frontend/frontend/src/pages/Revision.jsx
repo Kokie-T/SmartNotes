@@ -1,12 +1,12 @@
 import { useState } from "react";
 import API from "../services/api";
-import { Link } from "react-router-dom";
+import Layout from "../components/Layout";
 
 export default function Revision() {
     const [subject, setSubject] = useState("");
     const [revisionContent, setRevisionContent] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [expandedSections, setExpandedSections] = useState([]); // track expanded sections
+    const [expandedSections, setExpandedSections] = useState([]);
 
     const handleGenerateRevision = async () => {
         if (!subject.trim()) return;
@@ -16,7 +16,7 @@ export default function Revision() {
             const res = await API.post(`/revision/generate?subject=${subject}`);
             const parsed = JSON.parse(res.data.content);
             setRevisionContent(parsed);
-            setExpandedSections(Array(parsed.length).fill(false)); // collapse all initially
+            setExpandedSections(Array(parsed.length).fill(false));
         } catch (err) {
             console.error(err);
             alert("Failed to generate revision content.");
@@ -32,22 +32,7 @@ export default function Revision() {
     };
 
     return (
-        <div style={pageStyle}>
-            {/* Navbar */}
-            <nav style={navbarStyle}>
-                <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-                    <h1 style={{ fontWeight: 700, fontSize: "1.5rem" }}>Smart Notes</h1>
-                    <div style={{ display: "flex", gap: "15px", alignItems: "center", flexWrap: "wrap" }}>
-                        <Link to="/" style={navLinkStyle}>Home</Link>
-                        <Link to="/flashcards" style={navLinkStyle}>Flashcards</Link>
-                        <Link to="/summarize" style={navLinkStyle}>Summarize</Link>
-                        <Link to="/quiz" style={navLinkStyle}>Quiz</Link>
-                        <Link to="/revision" style={navLinkStyle}>Revision</Link>
-                        <Link to="/dashboard" style={navLinkStyle}>Dashboard</Link>
-                    </div>
-                </div>
-            </nav>
-
+        
             <div style={containerStyle}>
                 <h2 style={titleStyle}>AI Smart Revision</h2>
 
@@ -89,11 +74,13 @@ export default function Revision() {
                                 <h3 style={{ marginBottom: "10px" }}>
                                     {item.title || `Section ${index + 1}`}
                                 </h3>
+
                                 {expandedSections[index] && (
                                     <>
                                         <p style={{ lineHeight: 1.6, opacity: 0.85 }}>
                                             {item.content}
                                         </p>
+
                                         {item.link && (
                                             <a href={item.link} style={buttonLinkStyle}>
                                                 Go to Topic
@@ -106,37 +93,11 @@ export default function Revision() {
                     </div>
                 )}
             </div>
-        </div>
+       
     );
 }
 
 /* ------------------ STYLES ------------------ */
-const pageStyle = {
-    minHeight: "100vh",
-    width: "100%",
-    overflowX: "hidden",
-    display: "flex",
-    flexDirection: "column",
-    background: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)",
-    color: "white",
-    fontFamily: "'Segoe UI', sans-serif"
-};
-
-const navbarStyle = {
-    width: "100%",
-    padding: "15px 20px",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    background: "rgba(255,255,255,0.06)",
-    backdropFilter: "blur(20px)",
-    borderBottom: "1px solid rgba(255,255,255,0.08)",
-    boxShadow: "0 5px 15px rgba(0,0,0,0.3)",
-    position: "sticky",
-    top: 0,
-    zIndex: 1000,
-    flexWrap: "wrap"
-};
 
 const containerStyle = {
     width: "95%",
@@ -147,7 +108,8 @@ const containerStyle = {
     background: "rgba(255, 255, 255, 0.06)",
     backdropFilter: "blur(20px)",
     border: "1px solid rgba(255,255,255,0.08)",
-    boxShadow: "0 20px 40px rgba(0,0,0,0.4)"
+    boxShadow: "0 20px 40px rgba(0,0,0,0.4)",
+    color: "white"
 };
 
 const titleStyle = {
@@ -173,8 +135,7 @@ const inputStyle = {
     backgroundColor: "rgba(255,255,255,0.08)",
     color: "white",
     fontSize: "1rem",
-    outline: "none",
-    transition: "0.3s ease"
+    outline: "none"
 };
 
 const buttonStyle = {
@@ -187,8 +148,7 @@ const buttonStyle = {
     fontWeight: 600,
     cursor: "pointer",
     marginBottom: "20px",
-    boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
-    transition: "0.3s ease, transform 0.2s ease"
+    boxShadow: "0 8px 20px rgba(0,0,0,0.3)"
 };
 
 const cardsContainer = {
@@ -203,8 +163,7 @@ const cardStyle = {
     padding: "20px",
     borderRadius: "16px",
     border: "1px solid rgba(255,255,255,0.1)",
-    boxShadow: "0 15px 35px rgba(0,0,0,0.3)",
-    transition: "all 0.5s ease"
+    boxShadow: "0 15px 35px rgba(0,0,0,0.3)"
 };
 
 const buttonLinkStyle = {
@@ -217,13 +176,4 @@ const buttonLinkStyle = {
     fontWeight: 600,
     textDecoration: "none",
     cursor: "pointer"
-};
-
-const navLinkStyle = {
-    color: "white",
-    textDecoration: "none",
-    fontWeight: 500,
-    transition: "0.3s",
-    cursor: "pointer",
-    padding: "5px 8px"
 };

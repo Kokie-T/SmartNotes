@@ -1,6 +1,6 @@
 import { useState } from "react";
 import API from "../services/api";
-import { Link } from "react-router-dom";
+import Layout from "../Components/Layout"
 
 export default function Flashcards() {
     const [subject, setSubject] = useState("");
@@ -36,21 +36,7 @@ export default function Flashcards() {
 
     return (
         <div style={pageStyle}>
-            {/* Navbar */}
-            <nav style={navbarStyle}>
-                <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-                    <h1 style={{ fontWeight: 700, fontSize: "1.5rem" }}>Smart Notes</h1>
-                    <div style={{ display: "flex", gap: "15px", alignItems: "center", flexWrap: "wrap" }}>
-                        <Link to="/" style={navLinkStyle}>Home</Link>
-                        <Link to="/flashcards" style={navLinkStyle}>Flashcards</Link>
-                        <Link to="/summarize" style={navLinkStyle}>Summarize</Link>
-                        <Link to="/quiz" style={navLinkStyle}>Quiz</Link>
-                        <Link to="/revision" style={navLinkStyle}>Revision</Link>
-                        <Link to="/dashboard" style={navLinkStyle}>Dashboard</Link>
-                    </div>
-                </div>
-            </nav>
-
+          
             <div style={containerStyle}>
                 <h2 style={titleStyle}>Create Flashcards</h2>
                 <p style={instructionStyle}>
@@ -104,28 +90,12 @@ export default function Flashcards() {
 
 // --- STYLES ---
 const pageStyle = {
-    minHeight: "100vh",
+   
     width: "100%",
     overflowX: "hidden",
     background: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)",
     color: "white",
     fontFamily: "'Segoe UI', sans-serif",
-};
-
-const navbarStyle = {
-    width: "100%",
-    padding: "15px 20px",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    background: "rgba(255,255,255,0.06)",
-    backdropFilter: "blur(20px)",
-    borderBottom: "1px solid rgba(255,255,255,0.08)",
-    boxShadow: "0 5px 15px rgba(0,0,0,0.3)",
-    position: "sticky",
-    top: 0,
-    zIndex: 1000,
-    flexWrap: "wrap",
 };
 
 const containerStyle = {

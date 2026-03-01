@@ -5,199 +5,111 @@ export default function LandingPage() {
     const [moreOpen, setMoreOpen] = useState(false);
 
     return (
-        <div
-            style={{
-                minHeight: "100vh",
-                width: "100%",
-                margin: 0,
-                padding: 0,
-                background: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)",
-                color: "white",
-                fontFamily: "'Segoe UI', sans-serif",
-                overflowX: "hidden"
-            }}
-        >
-            {/* Navbar */}
-            <nav
-                style={{
-                    width: "100%",
-                    padding: "15px 20px",
-                    display: "flex",
-                    justifyContent: "space-evenly",
-                    alignItems: "center",
-                    background: "rgba(255,255,255,0.06)",
-                    backdropFilter: "blur(20px)",
-                    borderBottom: "1px solid rgba(255,255,255,0.08)",
-                    boxShadow: "0 5px 15px rgba(0,0,0,0.3)",
-                    position: "sticky",
-                    top: 0,
-                    zIndex: 1000,
-                    flexWrap: "wrap",
-                }}
-            >
-                {/* Left: Logo + main nav */}
-                <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-                    <h1 style={{ fontWeight: 700, fontSize: "1.5rem" }}>Smart Notes</h1>
-
-                    <div style={{ display: "flex", gap: "15px", alignItems: "center", flexWrap: "wrap" }}>
-                        <Link to="/" style={navLinkStyle}>Home</Link>
-                        <Link to="/flashcards" style={navLinkStyle}>Flashcards</Link>
-                        <Link to="/summarize" style={navLinkStyle}>Summarize</Link>
-
-                        {/* More dropdown */}
-                        <div style={{ position: "relative" }}>
-                            <button
-                                onClick={() => setMoreOpen(!moreOpen)}
-                                style={moreButtonStyle}
-                                onMouseEnter={e => e.currentTarget.style.background = "#6366f1"}
-                                onMouseLeave={e => e.currentTarget.style.background = "#4f46e5"}
-                            >
-                                More ▾
-                            </button>
-                            {moreOpen && (
-                                <div
-                                    style={{
-                                        position: "absolute",
-                                        top: "120%",
-                                        left: 0,
-                                        background: "rgba(255,255,255,0.08)",
-                                        backdropFilter: "blur(10px)",
-                                        borderRadius: "8px",
-                                        padding: "10px",
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        gap: "10px",
-                                        boxShadow: "0 5px 15px rgba(0,0,0,0.3)"
-                                    }}
-                                >
-                                    <Link to="/quiz" style={navLinkStyle}>Quiz</Link>
-                                    <Link to="/revision" style={navLinkStyle}>Revision</Link>
-                                    <Link to="/dashboard" style={navLinkStyle}>Dashboard</Link>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-
-                {/* Right: login/register */}
-                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                    <Link to="/login" style={authLinkStyle}>Login</Link>
-                    <Link to="/register" style={authLinkStyle}>Register</Link>
-                </div>
-            </nav>
-
+        <div style={containerStyle}>
             {/* Hero Section */}
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    textAlign: "center",
-                    padding: "80px 20px"
-                }}
-            >
-                <h1 style={{
-                    fontSize: "3rem",
-                    fontWeight: 700,
-                    marginBottom: "20px",
-                    textShadow: "0 2px 10px rgba(0,0,0,0.5)"
-                }}>
+            <div style={heroStyle}>
+                <h1 style={heroTitle}>
                     Generate Notes, Quizzes & Flashcards with AI
                 </h1>
-                <p style={{ fontSize: "1.2rem", opacity: 0.8, marginBottom: "30px", maxWidth: "700px" }}>
-                    Smart Notes helps you capture thoughts, summarize content, and create quizzes effortlessly.
+
+                <p style={heroText}>
+                    Smart Notes helps you capture thoughts, summarize content,
+                    and create quizzes effortlessly.
                 </p>
+
                 <Link to="/register" style={getStartedButton}>
                     Get Started for Free
                 </Link>
             </div>
 
             {/* Features Section */}
-            <section
-                style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-                    gap: "20px",
-                    padding: "60px 50px",
-                    width: "100%",
-                    maxWidth: "1400px",
-                    margin: "0 auto"
-                }}
-            >
-                <FeatureCard title="Create Flashcards" description="Turn your notes into AI-generated flashcards for quick revision." />
-                <FeatureCard title="Summarize with AI" description="Get concise summaries from long notes or lectures instantly." />
-                <FeatureCard title="Generate Quiz" description="Test your knowledge with AI-generated quizzes based on your notes." />
-                <FeatureCard title="Revision" description="Organize and schedule your learning with smart revision plans." />
+            <section style={featuresSection}>
+                <Link to="/flashcards"><FeatureCard
+                    title="Create Flashcards"
+                    description="Turn your notes into AI-generated flashcards for quick revision."
+                /></Link>
+                <Link to="/notes"><FeatureCard
+                    title="Generate Notes with AI"
+                    description="Get concise Notes for smart studying."
+                    
+                /></Link>
+                <Link to="/generatequiz"><FeatureCard
+                    title="Generate Quiz"
+                    description="Test your knowledge with AI-generated quizzes."
+                /></Link>
+                <Link to="/revision"><FeatureCard
+                    title="Revision"
+                    description="Organize learning with smart revision plans."
+                /></Link>
             </section>
         </div>
     );
 }
 
-// Feature card with hover lift
+/* ---------------- FEATURE CARD ---------------- */
+
 function FeatureCard({ title, description }) {
     return (
         <div
-            style={{
-                background: "rgba(255,255,255,0.06)",
-                padding: "25px",
-                borderRadius: "18px",
-                backdropFilter: "blur(20px)",
-                border: "1px solid rgba(255,255,255,0.08)",
-                boxShadow: "0 20px 40px rgba(0,0,0,0.3)",
-                color: "white",
-                textAlign: "center",
-                transition: "0.3s ease, transform 0.3s ease",
-            }}
-            onMouseEnter={e => e.currentTarget.style.transform = "translateY(-5px)"}
+            style={cardStyle}
+            onMouseEnter={e => e.currentTarget.style.transform = "translateY(-6px)"}
             onMouseLeave={e => e.currentTarget.style.transform = "translateY(0)"}
         >
-            <h3 style={{ fontWeight: 600, marginBottom: "12px" }}>{title}</h3>
-            <p style={{ fontSize: "0.9rem", opacity: 0.8 }}>{description}</p>
+            <h3 style={{ marginBottom: "12px" }}>{title}</h3>
+            <p style={{ opacity: 0.8 }}>{description}</p>
         </div>
     );
 }
 
-// Styles
-const navLinkStyle = {
+/* ---------------- STYLES ---------------- */
+
+const containerStyle = {
+    maxWidth: "1200px",
+    margin: "0 auto",
+    padding: "80px 20px",
     color: "white",
-    textDecoration: "none",
-    fontWeight: 500,
-    transition: "0.3s",
-    cursor: "pointer",
-    padding: "5px 8px"
 };
 
-const authLinkStyle = {
-    color: "white",
-    textDecoration: "none",
-    fontWeight: 600,
-    padding: "8px 15px",
-    borderRadius: "8px",
-    background: "rgba(255,255,255,0.1)",
-    transition: "0.3s ease",
-    cursor: "pointer"
+const heroStyle = {
+    textAlign: "center",
+    marginBottom: "80px",
+};
+
+const heroTitle = {
+    fontSize: "3rem",
+    fontWeight: 700,
+    marginBottom: "20px",
+};
+
+const heroText = {
+    fontSize: "1.2rem",
+    opacity: 0.85,
+    maxWidth: "700px",
+    margin: "0 auto 30px auto",
 };
 
 const getStartedButton = {
-    padding: "15px 40px",
+    padding: "14px 40px",
     borderRadius: "12px",
     background: "#4f46e5",
     color: "white",
     fontWeight: 600,
     textDecoration: "none",
-    transition: "0.3s ease",
-    cursor: "pointer",
-    boxShadow: "0 10px 20px rgba(0,0,0,0.3)"
+    display: "inline-block",
 };
 
-const moreButtonStyle = {
-    padding: "6px 12px",
-    borderRadius: "8px",
-    background: "#4f46e5",
-    color: "white",
-    fontWeight: 500,
-    cursor: "pointer",
-    border: "none",
-    transition: "0.3s ease, transform 0.2s ease",
+const featuresSection = {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+    gap: "25px",
+};
+
+const cardStyle = {
+    background: "rgba(255,255,255,0.06)",
+    padding: "25px",
+    borderRadius: "18px",
+    backdropFilter: "blur(20px)",
+    border: "1px solid rgba(255,255,255,0.08)",
+    boxShadow: "0 20px 40px rgba(0,0,0,0.3)",
+    transition: "0.3s ease",
 };

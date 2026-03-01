@@ -9,14 +9,17 @@ export default function Layout() {
                 minHeight: "100vh",
                 display: "flex",
                 flexDirection: "column",
-                background: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)"
+                background: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)",
+                overflowX: "hidden", // prevents horizontal scroll
+                boxSizing: "border-box",
+                color: "white" // ensures text stays white by default
             }}
         >
             <Navbar />
 
-            <div style={{ flex: 1 }}>
+            <main style={{ flex: 1 }}>
                 <Outlet />
-            </div>
+            </main>
 
             <Footer />
         </div>
