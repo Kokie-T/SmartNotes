@@ -1,6 +1,5 @@
 ﻿import { useState } from "react";
 import API from "../services/api";
-import Navbar from "../Components/Navbar";
 
 export default function GenerateQuiz() {
     const [subject, setSubject] = useState("");
@@ -12,10 +11,7 @@ export default function GenerateQuiz() {
 
         try {
             setLoading(true);
-
             const res = await API.post(`/quiz/generate?subject=${subject}`);
-
-            // Parse JSON safely
             const parsedQuiz = JSON.parse(res.data.questionsJson);
             setQuiz(parsedQuiz);
         } catch (err) {
@@ -27,41 +23,40 @@ export default function GenerateQuiz() {
     };
 
     return (
-        <div style={pageStyle}>
-            <Navbar />
+        
+            <div style={{ maxWidth: "900px", margin: "80px auto 50px auto", padding: "0 20px" }}>
+                <h2 style={{ fontSize: "2rem", fontWeight: 700, marginBottom: "20px" }}>
+                    Generate Quiz with AI
+                </h2>
 
-            <div style={containerStyle}>
-                <h2 style={titleStyle}>Generate Quiz with AI</h2>
-
-                <p style={instructionStyle}>
+                <p style={{ opacity: 0.8, marginBottom: "25px" }}>
                     Enter a subject below. The AI will generate practice quiz questions
                     with multiple-choice answers to test your understanding.
                 </p>
 
-                <input
-                    placeholder="e.g. Algebra, JavaScript, Human Anatomy"
-                    value={subject}
-                    onChange={(e) => setSubject(e.target.value)}
-                    style={inputStyle}
-                />
-
-                <button onClick={handleGenerate} style={buttonStyle}>
-                    {loading ? "Generating..." : "Generate Quiz"}
-                </button>
+                <div style={{ display: "flex", gap: "15px", flexWrap: "wrap", marginBottom: "20px" }}>
+                    <input
+                        placeholder="e.g. Algebra, JavaScript, Human Anatomy"
+                        value={subject}
+                        onChange={(e) => setSubject(e.target.value)}
+                        style={inputStyle}
+                    />
+                    <button onClick={handleGenerate} disabled={loading} style={primaryButton}>
+                        {loading ? "Generating..." : "Generate Quiz"}
+                    </button>
+                </div>
 
                 {quiz.length > 0 && (
-                    <div style={resultStyle}>
+                    <div style={resultContainer}>
                         <h3 style={{ marginBottom: "20px" }}>Generated Quiz</h3>
-
                         {quiz.map((q, index) => (
-                            <div key={index} style={cardStyle}>
+                            <div key={index} style={quizCard}>
                                 <p style={{ fontWeight: 600, marginBottom: "10px" }}>
                                     {index + 1}. {q.question}
                                 </p>
-
-                                {q.options?.map((option, i) => (
+                                {q.options?.map((opt, i) => (
                                     <p key={i} style={{ opacity: 0.85, marginLeft: "10px" }}>
-                                        • {option}
+                                        • {opt}
                                     </p>
                                 ))}
                             </div>
@@ -69,74 +64,41 @@ export default function GenerateQuiz() {
                     </div>
                 )}
             </div>
-        </div>
+       
     );
 }
 
 /* ------------------ STYLES ------------------ */
-
-const pageStyle = {
-    minHeight: "100vh",
-    width: "100%",
-    overflowX: "hidden",
-    display: "flex",
-    flexDirection: "column",
-    background: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)",
-    color: "white",
-};
-
-const containerStyle = {
-    width: "100%",
-    maxWidth: "800px",
-    margin: "120px auto 40px auto", // pushes below navbar and centers
-    padding: "40px",
-    borderRadius: "18px",
-    background: "rgba(255, 255, 255, 0.06)",
-    backdropFilter: "blur(20px)",
-    border: "1px solid rgba(255,255,255,0.08)",
-    boxShadow: "0 20px 40px rgba(0,0,0,0.4)",
-};
-
-const titleStyle = {
-    fontSize: "1.8rem",
-    marginBottom: "15px",
-};
-
-const instructionStyle = {
-    opacity: 0.8,
-    marginBottom: "20px",
-};
-
 const inputStyle = {
-    width: "100%",
-    padding: "12px",
-    marginBottom: "15px",
+    flex: 1,
+    padding: "12px 15px",
     borderRadius: "10px",
-    border: "1px solid rgba(255,255,255,0.1)",
-    backgroundColor: "rgba(255,255,255,0.08)",
+    border: "1px solid rgba(255,255,255,0.2)",
+    backgroundColor: "rgba(255,255,255,0.05)",
     color: "white",
     outline: "none",
+    fontSize: "1rem",
 };
 
-const buttonStyle = {
-    width: "100%",
-    padding: "12px",
+const primaryButton = {
+    padding: "12px 25px",
     borderRadius: "10px",
     border: "none",
     backgroundColor: "#4f46e5",
     color: "white",
     fontWeight: 600,
     cursor: "pointer",
-    marginBottom: "20px",
+    transition: "0.3s",
+    whiteSpace: "nowrap",
 };
 
-const resultStyle = {
+const resultContainer = {
     marginTop: "20px",
 };
 
-const cardStyle = {
+const quizCard = {
     backgroundColor: "rgba(255,255,255,0.08)",
     padding: "15px",
     borderRadius: "10px",
     marginBottom: "15px",
-};
+}

@@ -1,18 +1,16 @@
 import { useState } from "react";
 import API from "../services/api";
-import Navbar from "../components/Navbar";
-import { AiOutlineFileText } from "react-icons/ai"; // Icon for notes
+import Layout from "../components/Layout";
+import { AiOutlineFileText } from "react-icons/ai";
 
 export default function NotesPage() {
     const [subject, setSubject] = useState("");
     const [notes, setNotes] = useState("");
     const [loading, setLoading] = useState(false);
 
-    // Dummy user – replace with actual auth context
-    const user = { email: "user@example.com", avatar: null };
-
     const generateNotes = async () => {
         if (!subject) return;
+
         setLoading(true);
         try {
             const res = await API.post(`/notes/generate?subject=${subject}`);
@@ -25,9 +23,7 @@ export default function NotesPage() {
     };
 
     return (
-        <div style={{ minHeight: "100vh", background: "#0f2027", color: "white", fontFamily: "'Segoe UI', sans-serif" }}>
-            <Navbar user={user} />
-
+        
             <div style={{ maxWidth: "1200px", margin: "80px auto 50px auto", padding: "0 20px" }}>
                 <h2 style={{ fontSize: "2rem", fontWeight: 700, marginBottom: "20px" }}>
                     <AiOutlineFileText style={{ verticalAlign: "middle", marginRight: "8px" }} />
@@ -46,6 +42,7 @@ export default function NotesPage() {
                         onChange={(e) => setSubject(e.target.value)}
                         style={inputStyle}
                     />
+
                     <button onClick={generateNotes} disabled={loading} style={primaryButton}>
                         {loading ? "Generating..." : "Generate Notes"}
                     </button>
@@ -53,16 +50,19 @@ export default function NotesPage() {
 
                 {notes && (
                     <div style={cardStyle}>
-                        <h3 style={{ fontWeight: 600, marginBottom: "10px" }}>Your Notes</h3>
+                        <h3 style={{ fontWeight: 600, marginBottom: "10px" }}>
+                            Your Notes
+                        </h3>
                         <p style={{ whiteSpace: "pre-line" }}>{notes}</p>
                     </div>
                 )}
             </div>
-        </div>
+       
     );
 }
 
-// Styles
+/* ------------------ STYLES ------------------ */
+
 const inputStyle = {
     flex: 1,
     padding: "12px 15px",
