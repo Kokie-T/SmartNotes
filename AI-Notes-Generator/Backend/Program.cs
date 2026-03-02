@@ -7,29 +7,41 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add CORS
+// ✅ CORS - Allow ANY localhost origin (dev only)
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy
-            .WithOrigins("http://localhost:5173") // frontend URL
-            .AllowAnyHeader()
-            .AllowAnyMethod();
+        policy.SetIsOriginAllowed(origin =>
+        {
+            if (string.IsNullOrWhiteSpace(origin)) return false;
+
+            return origin.StartsWith("http://localhost:") ||
+                   origin.StartsWith("https://localhost:");
+        })
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
     });
 });
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<GeminiService>();
 
-// Add DbContext with LocalDB
+builder.Services.AddHttpClient<GeminiService>();
+
+// ✅ Database
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// JWT setup
+// ✅ JWT Setup
 var jwtSecret = builder.Configuration["JWT_SECRET"];
+if (string.IsNullOrWhiteSpace(jwtSecret))
+{
+    throw new InvalidOperationException("JWT_SECRET is missing in configuration.");
+}
+
 builder.Services.AddSingleton(new TokenService(jwtSecret));
 
 builder.Services.AddAuthentication(options =>
@@ -51,7 +63,7 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
-// Configure pipeline
+// ✅ Development tools
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -60,7 +72,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-// ✅ Apply CORS here, BEFORE authentication/authorization
+// ✅ IMPORTANT: CORS before Auth
 app.UseCors("AllowFrontend");
 
 app.UseAuthentication();

@@ -24,13 +24,17 @@ namespace Backend.Controllers
         [HttpPost("generate")]
         public async Task<IActionResult> GenerateQuiz([FromQuery] string subject)
         {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userIdStr == null) return Unauthorized();
+
+            if (!Guid.TryParse(userIdStr, out var userId))
+                return BadRequest("Invalid user ID format.");
 
             var questionsJson = await _gemini.GenerateQuizAsync(subject);
 
             var quiz = new Quiz
             {
-                UserId = userId,
+                UserId = userId, // ✅ Guid
                 Subject = subject,
                 QuestionsJson = questionsJson
             };
@@ -44,7 +48,12 @@ namespace Backend.Controllers
         [HttpGet]
         public IActionResult GetQuizzes()
         {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var userIdStr = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userIdStr == null) return Unauthorized();
+
+            if (!Guid.TryParse(userIdStr, out var userId))
+                return BadRequest("Invalid user ID format.");
+
             var quizzes = _context.Quizzes.Where(q => q.UserId == userId).ToList();
             return Ok(quizzes);
         }
